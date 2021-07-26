@@ -14,10 +14,10 @@ public class CameraManager : MonoBehaviour
     {
         canvas_list = new Canvas[cam_transforms.Length];
         // For loop that gets all the cameras canvases
-        for(int i=0; i < canvas_list.Length; i++)
-        {
-            canvas_list[i] = cam_transforms[i].GetComponent<NewScript>().cameraCanvas;
-        }
+        // for(int i=0; i < canvas_list.Length; i++)
+        // {
+        //     canvas_list[i] = cam_transforms[i].GetComponent<NewScript>().cameraCanvas;
+        // }
     }
 
     // Update is called once per frame
