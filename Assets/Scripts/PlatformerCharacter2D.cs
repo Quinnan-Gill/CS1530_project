@@ -11,7 +11,11 @@ namespace UnityStandardAssets._2D
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
+        [SerializeField] private float wallSlidingSpeed = 0.5f;
+        [SerializeField] private float wallJumpX = 10f;
+        [SerializeField] private float wallJumpY = 10f;
 
+        public LayerMask groundMask;
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
         const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
         private bool m_Grounded;            // Whether or not the player is grounded.
@@ -21,6 +25,12 @@ namespace UnityStandardAssets._2D
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
+        private bool wallSliding = false;
+        private Vector2 orginal_gravity;
+        private Transform m_LeftCheck;
+        private bool m_Left = false;
+        private bool m_Right = false;
+
         private void Awake()
         {
             // Setting up references.
@@ -28,6 +38,7 @@ namespace UnityStandardAssets._2D
             m_CeilingCheck = transform.Find("CeilingCheck");
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
+            orginal_gravity = Physics2D.gravity;
         }
 
 
@@ -37,16 +48,32 @@ namespace UnityStandardAssets._2D
 
             // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
             // This can be done using layers instead but Sample Assets will not overwrite your project settings.
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
-            for (int i = 0; i < colliders.Length; i++)
+            Collider2D[] collidersGround = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+            for (int i = 0; i < collidersGround.Length; i++)
             {
-                if (colliders[i].gameObject != gameObject)
+                if (collidersGround[i].gameObject != gameObject)
                     m_Grounded = true;
             }
             m_Anim.SetBool("Ground", m_Grounded);
 
             // Set the vertical animation
             m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
+
+            m_Left = Physics2D.OverlapBox(
+                new Vector2(
+                    gameObject.transform.position.x - 0.25f,
+                    gameObject.transform.position.y
+                ),
+                new Vector2(0.25f, 0.2f), 0f, m_WhatIsGround
+            );
+
+            m_Right = Physics2D.OverlapBox(
+                new Vector2(
+                    gameObject.transform.position.x + 0.25f,
+                    gameObject.transform.position.y
+                ),
+                new Vector2(0.25f, 0.2f), 0f, m_WhatIsGround
+            );
         }
 
 
@@ -90,6 +117,32 @@ namespace UnityStandardAssets._2D
                     Flip();
                 }
             }
+
+            if ((m_Left || m_Right) && !m_Grounded)
+            {   
+                wallSliding = true;
+            }
+            else
+            {
+                wallSliding = false;
+            }
+
+            if (wallSliding && Input.GetKey("space"))
+            {
+                float dir = m_Left ? 1 : -1;
+                m_Rigidbody2D.velocity = new Vector2(
+                    wallJumpX * dir, wallJumpY
+                );
+            }
+            else if(wallSliding)
+            {
+                m_Rigidbody2D.velocity = new Vector2(
+                    m_Rigidbody2D.velocity.x,
+                    Mathf.Clamp(m_Rigidbody2D.velocity.x, wallSlidingSpeed, float.MaxValue)
+                );
+            }
+
+
             // If the player should jump...
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             {
@@ -110,6 +163,26 @@ namespace UnityStandardAssets._2D
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(
+                new Vector2(
+                    gameObject.transform.position.x - 0.25f,
+                    gameObject.transform.position.y
+                ),
+                new Vector2(0.25f, 0.2f)
+            );
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(
+                new Vector2(
+                    gameObject.transform.position.x + 0.25f,
+                    gameObject.transform.position.y
+                ),
+                new Vector2(0.25f, 0.2f)
+            );
         }
     }
 }

@@ -16,12 +16,25 @@ namespace UnityStandardAssets._2D
         private Vector3 m_CurrentVelocity;
         private Vector3 m_LookAheadPos;
 
+        public Transform cameraCanvas;
+        private float cam_height;
+        private float cam_width;
+        private float canvas_height;
+        private float canvas_width;
+
         // Use this for initialization
         private void Start()
         {
             m_LastTargetPosition = target.position;
             m_OffsetZ = (transform.position - target.position).z;
             transform.parent = null;
+
+            Camera cam = gameObject.GetComponent<Camera>();
+            cam_height = 2f * cam.orthographicSize;
+            cam_width = cam_height * cam.aspect;
+
+            canvas_height = cameraCanvas.GetComponent<RectTransform>().rect.height;
+            canvas_width  = cameraCanvas.GetComponent<RectTransform>().rect.width;
         }
 
 
@@ -45,7 +58,27 @@ namespace UnityStandardAssets._2D
             Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
             Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
 
-            transform.position = newPos;
+            if (cameraCanvas != null)
+            {
+                transform.position = new Vector3(
+                    Mathf.Clamp(
+                        newPos.x,
+                        cameraCanvas.position.x - canvas_width/2 + cam_width/2,
+                        cameraCanvas.position.x + canvas_width/2 - cam_width/2
+                    ),
+                    // newPos.x,
+                    Mathf.Clamp(
+                        newPos.y,
+                        cameraCanvas.position.y - canvas_height/2 + cam_height/2,
+                        cameraCanvas.position.y + canvas_height/2 - cam_height/2
+                    ),
+                    newPos.z
+                );
+            }
+            else
+            {
+                transform.position = newPos;
+            }
 
             m_LastTargetPosition = target.position;
         }
