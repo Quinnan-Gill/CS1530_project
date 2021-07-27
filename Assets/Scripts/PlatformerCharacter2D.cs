@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 #pragma warning disable 649
 namespace UnityStandardAssets._2D
