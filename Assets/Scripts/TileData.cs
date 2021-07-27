@@ -8,5 +8,6 @@ public class TileData : ScriptableObject
 {
     public TileBase[] tiles;
 
-    public float walkingSpeed, poisonous;
+    public bool dangerous;
+    public string description;
 }

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiles:
   - {fileID: 11400000, guid: 0033a7a17821748e3a7daa454f2c0c95, type: 2}
-  walkingSpeed: 0
-  poisonous: 0
+  dangerous: 1
+  description: Yellow Grass
