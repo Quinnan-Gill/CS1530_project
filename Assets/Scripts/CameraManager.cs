@@ -5,8 +5,8 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     public GameObject[] cam_transforms;
-    public Transform player;
 
+    // private Transform[] playerLinks;
     private Transform[] canvas_list;
 
     // Start is called before the first frame update
@@ -23,15 +23,16 @@ public class CameraManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if (player == null)
-        {
-            return;
-        }
-        
+    {   
         for(int i=0; i < canvas_list.Length; i++)
         {
-            if (WithinCanvas(canvas_list[i]))
+            Transform player = cam_transforms[i].GetComponent<Camera2DFollow>().target;
+            
+            if (player == null)
+            {
+                continue;
+            }
+            else if (WithinCanvas(i, player))
             {
                 cam_transforms[i].GetComponent<Camera>().enabled = true;
             }
@@ -42,16 +43,16 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    private bool WithinCanvas(Transform canvas)
+    private bool WithinCanvas(int i, Transform player)
     {
-        float canvas_height = canvas.GetComponent<RectTransform>().rect.height;
-        float canvas_width  = canvas.GetComponent<RectTransform>().rect.width;
+        float canvas_height = canvas_list[i].GetComponent<RectTransform>().rect.height;
+        float canvas_width  = canvas_list[i].GetComponent<RectTransform>().rect.width;
 
         if (
-            (player.position.x >= canvas.position.x - canvas_width/2)  &&
-            (player.position.x <  canvas.position.x + canvas_width/2)  &&
-            (player.position.y >= canvas.position.y - canvas_height/2) &&
-            (player.position.y <  canvas.position.y + canvas_height/2)
+            (player.position.x >= canvas_list[i].position.x - canvas_width/2)  &&
+            (player.position.x <  canvas_list[i].position.x + canvas_width/2)  &&
+            (player.position.y >= canvas_list[i].position.y - canvas_height/2) &&
+            (player.position.y <  canvas_list[i].position.y + canvas_height/2)
         )
         {
             return true;

@@ -177,13 +177,6 @@ namespace UnityStandardAssets._2D
                     wallJumpX * dir, wallJumpY
                 );
             }
-            // else if(wallSliding)
-            // {
-            //     m_Rigidbody2D.velocity = new Vector2(
-            //         m_Rigidbody2D.velocity.x,
-            //         Mathf.Clamp(m_Rigidbody2D.velocity.x, wallSlidingSpeed, float.MaxValue)
-            //     );
-            // }
 
 
             // If the player should jump...
@@ -206,6 +199,11 @@ namespace UnityStandardAssets._2D
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
+        }
+
+        public void SmallJump(float jumpHeight)
+        {
+            m_Rigidbody2D.AddForce(new Vector2(0f, jumpHeight));
         }
 
         void OnDrawGizmosSelected()
