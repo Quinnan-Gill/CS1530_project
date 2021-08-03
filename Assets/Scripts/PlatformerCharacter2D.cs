@@ -32,6 +32,8 @@ namespace UnityStandardAssets._2D
         private bool m_Left = false;
         private bool m_Right = false;
 
+        private MapManager mapManager;
+
         private void Awake()
         {
             // Setting up references.
@@ -40,6 +42,8 @@ namespace UnityStandardAssets._2D
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
             orginal_gravity = Physics2D.gravity;
+
+            mapManager = FindObjectOfType<MapManager>();
         }
 
 
@@ -53,7 +57,10 @@ namespace UnityStandardAssets._2D
             for (int i = 0; i < collidersGround.Length; i++)
             {
                 if (collidersGround[i].gameObject != gameObject)
+                {
+                    // Debug.Log(collidersGround[i].gameObject.GetComponent<Tilemap>().);
                     m_Grounded = true;
+                }
             }
             m_Anim.SetBool("Ground", m_Grounded);
 
@@ -75,6 +82,40 @@ namespace UnityStandardAssets._2D
                 ),
                 new Vector2(0.25f, 0.2f), 0f, m_WhatIsGround
             );
+
+            CheckTileDanger();
+        }
+
+        private void CheckTileDanger()
+        {
+            bool g_result = mapManager.GetTileDanger(
+                new Vector2(
+                    m_GroundCheck.position.x,
+                    m_GroundCheck.position.y - k_GroundedRadius
+                )
+            );
+            if (g_result)
+                Debug.Log("On dangerous ground");
+            
+            // Right
+            bool r_result = mapManager.GetTileDanger(
+                new Vector2(
+                    transform.position.x + 1f,
+                    transform.position.y
+                )
+            );
+            if (r_result)
+                Debug.Log("On dangerous right");
+
+            // Left
+            bool l_result = mapManager.GetTileDanger(
+                new Vector2(
+                    transform.position.x - 1f,
+                    transform.position.y
+                )
+            );
+            if (l_result)
+                Debug.Log("On dangerous left");
         }
 
 
@@ -135,13 +176,13 @@ namespace UnityStandardAssets._2D
                     wallJumpX * dir, wallJumpY
                 );
             }
-            else if(wallSliding)
-            {
-                m_Rigidbody2D.velocity = new Vector2(
-                    m_Rigidbody2D.velocity.x,
-                    Mathf.Clamp(m_Rigidbody2D.velocity.x, wallSlidingSpeed, float.MaxValue)
-                );
-            }
+            // else if(wallSliding)
+            // {
+            //     m_Rigidbody2D.velocity = new Vector2(
+            //         m_Rigidbody2D.velocity.x,
+            //         Mathf.Clamp(m_Rigidbody2D.velocity.x, wallSlidingSpeed, float.MaxValue)
+            //     );
+            // }
 
 
             // If the player should jump...

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiles:
   - {fileID: 11400000, guid: 9f97c856939294556b335f6f57872ab6, type: 2}
-  walkingSpeed: 0
-  poisonous: 0
+  dangerous: 0
+  description: Green Grass
