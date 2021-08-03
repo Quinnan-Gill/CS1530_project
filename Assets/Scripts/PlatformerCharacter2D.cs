@@ -33,6 +33,7 @@ namespace UnityStandardAssets._2D
         private bool m_Right = false;
 
         private MapManager mapManager;
+        private Player player;
 
         private void Awake()
         {
@@ -44,6 +45,7 @@ namespace UnityStandardAssets._2D
             orginal_gravity = Physics2D.gravity;
 
             mapManager = FindObjectOfType<MapManager>();
+            player     = FindObjectOfType<Player>();
         }
 
 
@@ -94,8 +96,6 @@ namespace UnityStandardAssets._2D
                     m_GroundCheck.position.y - k_GroundedRadius
                 )
             );
-            if (g_result)
-                Debug.Log("On dangerous ground");
             
             // Right
             bool r_result = mapManager.GetTileDanger(
@@ -104,8 +104,6 @@ namespace UnityStandardAssets._2D
                     transform.position.y
                 )
             );
-            if (r_result)
-                Debug.Log("On dangerous right");
 
             // Left
             bool l_result = mapManager.GetTileDanger(
@@ -114,8 +112,11 @@ namespace UnityStandardAssets._2D
                     transform.position.y
                 )
             );
-            if (l_result)
-                Debug.Log("On dangerous left");
+
+            if (g_result || l_result || r_result)
+            {
+                player.DamagePlayer(10);
+            }
         }
 
 

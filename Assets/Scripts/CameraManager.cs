@@ -24,6 +24,11 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (player == null)
+        {
+            return;
+        }
+        
         for(int i=0; i < canvas_list.Length; i++)
         {
             if (WithinCanvas(canvas_list[i]))
