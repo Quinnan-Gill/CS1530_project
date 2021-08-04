@@ -32,8 +32,11 @@ public class Camera2DFollow : MonoBehaviour
         cam_height = 2f * cam.orthographicSize;
         cam_width = cam_height * cam.aspect;
 
-        canvas_height = cameraCanvas.GetComponent<RectTransform>().rect.height;
-        canvas_width  = cameraCanvas.GetComponent<RectTransform>().rect.width;
+        if (cameraCanvas != null)
+        {
+            canvas_height = cameraCanvas.GetComponent<RectTransform>().rect.height;
+            canvas_width  = cameraCanvas.GetComponent<RectTransform>().rect.width;
+        }
     }
 
 

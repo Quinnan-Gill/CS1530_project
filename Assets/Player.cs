@@ -15,44 +15,60 @@ public class Player : MonoBehaviour
 
     public Character playerStatus = new Character();
     private Rigidbody2D m_Rigidbody2D;
+    private SpriteRenderer oscRender;
 
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+
+        Transform renderTransform  = transform.Find("PlayerSprite");
+        if (renderTransform == null)
+        {
+            // Since there are no overlaying sprites use the defaul prefab sprite
+            oscRender = gameObject.GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            oscRender = renderTransform.GetComponent<SpriteRenderer>();
+        }
     }
 
-    private IEnumerator TempDisableHurt()
+    private IEnumerator TempDisableHurt(bool jumpLeft)
     {
         disableHurt = false;
+        int dir = jumpLeft ? -1 : 1;
+        m_Rigidbody2D.AddForce(
+            new Vector2(dir * hurtJumpHeight, hurtJumpHeight)
+        );
         InvokeRepeating("BlinkPlayer", 0, blinkSpeed);
         yield return new WaitForSeconds(disableHurtTime);
         disableHurt = true;
         CancelInvoke("BlinkPlayer");
-        if (!gameObject.GetComponent<SpriteRenderer>().enabled)
+        if (!oscRender.enabled)
         {
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+            oscRender.enabled = true;
         }
     }
 
     void BlinkPlayer()
     {
-        if(gameObject.GetComponent<SpriteRenderer>().enabled)
+        if(oscRender.enabled)
         {
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            oscRender.enabled = false;
         }
         else
         {
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+            oscRender.enabled = true;
         }
     }
 
-    public void DamagePlayer(int damage)
+    public void DamagePlayer(int damage, bool jumpLeft)
     {
         if (disableHurt)
         {
             playerStatus.Health -= damage;
-            m_Rigidbody2D.AddForce(new Vector2(0f, hurtJumpHeight));
-            StartCoroutine(TempDisableHurt());
+            Debug.Log(playerStatus.Health);
+            StartCoroutine(TempDisableHurt(jumpLeft));
         }
         if (playerStatus.Health <= 0)
         {

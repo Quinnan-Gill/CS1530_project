@@ -58,10 +58,6 @@ public class EnemyPatrol : MonoBehaviour
         //Get the next Point transform
         Transform goalPoint = points[nextID];
         //Flip the enemy transform to look into the point's direction
-        //if (goalPoint.transform.position.x > transform.position.x)
-            //transform.localScale = new Vector3(-1, 1, 1);
-        //else
-            //transform.localScale = new Vector3(1, 1, 1);
         //Move the enemy towards the goal point
         transform.position = Vector2.MoveTowards(transform.position,goalPoint.position,speed*Time.deltaTime);
         //Check the distance between enemy and goal point to trigger next point
@@ -77,12 +73,4 @@ public class EnemyPatrol : MonoBehaviour
             nextID += idChangeValue;
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-        //if (collision.tag == "Player")
-       // {
-        //    FindObjectOfType<LifeCount>().LoseLife();
-       // }
-    //}
 }

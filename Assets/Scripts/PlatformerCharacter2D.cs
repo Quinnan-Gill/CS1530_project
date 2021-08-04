@@ -24,13 +24,14 @@ namespace UnityStandardAssets._2D
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
         private Animator m_Anim;            // Reference to the player's animator component.
         private Rigidbody2D m_Rigidbody2D;
-        private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+        private bool m_FacingRight = false;  // For determining which way the player is currently facing.
 
         private bool wallSliding = false;
         private Vector2 orginal_gravity;
         private Transform m_LeftCheck;
         private bool m_Left = false;
         private bool m_Right = false;
+        private bool m_Top = false;
 
         private MapManager mapManager;
         private Player player;
@@ -60,7 +61,6 @@ namespace UnityStandardAssets._2D
             {
                 if (collidersGround[i].gameObject != gameObject)
                 {
-                    // Debug.Log(collidersGround[i].gameObject.GetComponent<Tilemap>().);
                     m_Grounded = true;
                 }
             }
@@ -85,37 +85,61 @@ namespace UnityStandardAssets._2D
                 new Vector2(0.25f, 0.2f), 0f, m_WhatIsGround
             );
 
+            m_Top = Physics2D.OverlapBox(
+                new Vector2(
+                    transform.position.x,
+                    transform.position.y + 0.40f
+                ),
+                new Vector2(0.25f, 0.2f), 0f, m_WhatIsGround
+            );
+
             CheckTileDanger();
         }
 
         private void CheckTileDanger()
         {
-            bool g_result = mapManager.GetTileDanger(
+            // Debug.Log(mapManager.GetTileDescription(
+            //     new Vector2(
+            //         transform.position.x,
+            //         transform.position.y + 0.60f
+            //     )
+            // ));
+
+            // Bottom
+            bool g_danger = mapManager.GetTileDanger(
                 new Vector2(
                     m_GroundCheck.position.x,
                     m_GroundCheck.position.y - k_GroundedRadius
                 )
             );
+
+            // Top
+            bool t_danger = mapManager.GetTileDanger(
+                new Vector2(
+                    transform.position.x,
+                    transform.position.y + 0.60f
+                )
+            );
             
-            // Right
-            bool r_result = mapManager.GetTileDanger(
-                new Vector2(
-                    transform.position.x + 1f,
-                    transform.position.y
-                )
-            );
+            // // Right
+            // bool r_result = mapManager.GetTileDanger(
+            //     new Vector2(
+            //         transform.position.x + 1f,
+            //         transform.position.y
+            //     )
+            // );
 
-            // Left
-            bool l_result = mapManager.GetTileDanger(
-                new Vector2(
-                    transform.position.x - 1f,
-                    transform.position.y
-                )
-            );
+            // // Left
+            // bool l_result = mapManager.GetTileDanger(
+            //     new Vector2(
+            //         transform.position.x - 1f,
+            //         transform.position.y
+            //     )
+            // );
 
-            if (g_result || l_result || r_result)
+            if (g_danger || t_danger)
             {
-                player.DamagePlayer(10);
+                player.DamagePlayer(50, true);
             }
         }
 
@@ -180,7 +204,7 @@ namespace UnityStandardAssets._2D
 
 
             // If the player should jump...
-            if (m_Grounded && jump && m_Anim.GetBool("Ground"))
+            if (m_Grounded && jump)
             {
                 // Add a vertical force to the player.
                 m_Grounded = false;
@@ -201,11 +225,6 @@ namespace UnityStandardAssets._2D
             transform.localScale = theScale;
         }
 
-        public void SmallJump(float jumpHeight)
-        {
-            m_Rigidbody2D.AddForce(new Vector2(0f, jumpHeight));
-        }
-
         void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
@@ -221,6 +240,14 @@ namespace UnityStandardAssets._2D
                 new Vector2(
                     gameObject.transform.position.x + 0.25f,
                     gameObject.transform.position.y
+                ),
+                new Vector2(0.25f, 0.2f)
+            );
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(
+                new Vector2(
+                    transform.position.x,
+                    transform.position.y + 0.40f
                 ),
                 new Vector2(0.25f, 0.2f)
             );

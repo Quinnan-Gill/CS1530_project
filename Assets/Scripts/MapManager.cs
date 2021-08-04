@@ -21,9 +21,13 @@ public class MapManager : MonoBehaviour
         {
             foreach (var tile in tileData.tiles)
             {
+                if (tile == null)
+                    continue;
                 dataFromTiles.Add(tile, tileData);
             }
         }
+
+        // Debug.Log(dataFromTiles.Count);
     }
 
     // Update is called once per frame
