@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public class Character
-    {
-        public int Health = 100;
-    }
+    public int Health = 100;
     private bool disableHurt = true;
     public float disableHurtTime = 0.1f;
     public float hurtJumpHeight = 0.1f;
     public float blinkSpeed = 0.1f;
 
-    public Character playerStatus = new Character();
     private Rigidbody2D m_Rigidbody2D;
     private SpriteRenderer oscRender;
 
@@ -66,11 +62,11 @@ public class Player : MonoBehaviour
     {
         if (disableHurt)
         {
-            playerStatus.Health -= damage;
-            Debug.Log(playerStatus.Health);
+            Health -= damage;
+            Debug.Log(Health);
             StartCoroutine(TempDisableHurt(jumpLeft));
         }
-        if (playerStatus.Health <= 0)
+        if (Health <= 0)
         {
             GameManager.KillPlayer(this);
         }
