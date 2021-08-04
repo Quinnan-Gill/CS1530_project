@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         }
         if (Health <= 0)
         {
-            GameManager.KillPlayer(this);
+            GameController.KillPlayer(this);
         }
     }
 }

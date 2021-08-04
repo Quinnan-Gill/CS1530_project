@@ -23,8 +23,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2d9deb55930764a4f8449b0fde1bc293, type: 2}
   - {fileID: 11400000, guid: 3b9c8bfda578c46429dcb8a239c07eff, type: 2}
   - {fileID: 11400000, guid: bc592d3e08ebbb44983fda1d19b2b4e4, type: 2}
-  - {fileID: 0}
-  dangerous: 0
+  dangerous_top: 0
+  dangerous_bottom: 0
+  hurt_val: 0
   bounce: 0
   no_rigid: 0
   description: Safe Platform

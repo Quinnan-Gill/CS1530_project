@@ -30,7 +30,7 @@ public class PlatformerCharacter2D : MonoBehaviour
     private bool m_Right = false;
     private bool m_Top = false;
 
-    private MapManager mapManager;
+    private MapController mapController;
     private Player player;
 
     private void Awake()
@@ -42,7 +42,7 @@ public class PlatformerCharacter2D : MonoBehaviour
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         orginal_gravity = Physics2D.gravity;
 
-        mapManager = FindObjectOfType<MapManager>();
+        mapController = FindObjectOfType<MapController>();
         player     = FindObjectOfType<Player>();
     }
 
@@ -103,7 +103,7 @@ public class PlatformerCharacter2D : MonoBehaviour
         // ));
 
         // Bottom
-        bool g_danger = mapManager.GetTileDanger(
+        bool g_danger = mapController.GetTileDanger(
             new Vector2(
                 m_GroundCheck.position.x,
                 m_GroundCheck.position.y - k_GroundedRadius
@@ -111,7 +111,7 @@ public class PlatformerCharacter2D : MonoBehaviour
         );
 
         // Top
-        bool t_danger = mapManager.GetTileDanger(
+        bool t_danger = mapController.GetTileDanger(
             new Vector2(
                 transform.position.x,
                 transform.position.y + 0.60f
