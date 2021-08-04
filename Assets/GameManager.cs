@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     public Transform playerPrefab;
     public Transform spawnPoint;
-    public int spawnDelay = 2;
+    public float spawnDelay = 1f;
 
     public IEnumerator RespawnPlayer()
     {
@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     {
         if (player != null)
         {
+            Debug.Log(player);
             Destroy(player.gameObject);
             gm.StartCoroutine(gm.RespawnPlayer());
         }

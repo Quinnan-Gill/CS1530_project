@@ -9,5 +9,7 @@ public class TileData : ScriptableObject
     public TileBase[] tiles;
 
     public bool dangerous;
+    public bool bounce;
+    public bool no_rigid;
     public string description;
 }
