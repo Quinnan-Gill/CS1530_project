@@ -15,6 +15,7 @@ public class Checkpoint : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            Debug.Log("Worked on getting position");
             gm.spawnPoint.position = transform.position;
         }
     }
