@@ -26,8 +26,6 @@ public class MapController : MonoBehaviour
                 dataFromTiles.Add(tile, tileData);
             }
         }
-
-        // Debug.Log(dataFromTiles.Count);
     }
 
     // Update is called once per frame
@@ -60,18 +58,59 @@ public class MapController : MonoBehaviour
         return desc;
     }
 
-    public bool GetTileDanger(Vector2 worldPosition)
+    public bool GetTileDangerTop(Vector2 worldPosition)
     {
-        // Vector3Int gridPosition = map.WorldToCell(worldPosition);
+        Vector3Int gridPosition = map.WorldToCell(worldPosition);
 
-        // TileBase tile = map.GetTile(gridPosition);
+        TileBase tile = map.GetTile(gridPosition);
 
-        // if (tile == null)
-        //     return false;
+        if (tile == null)
+            return false;
 
-        // bool dangerous = dataFromTiles[tile].dangerous;
+        bool dangerous = dataFromTiles[tile].dangerous_top;
 
-        // return dangerous;
-        return false;
+        return dangerous;
+    }
+
+    public bool GetTileDangerBottom(Vector2 worldPosition)
+    {
+        Vector3Int gridPosition = map.WorldToCell(worldPosition);
+
+        TileBase tile = map.GetTile(gridPosition);
+
+        if (tile == null)
+            return false;
+
+        bool dangerous = dataFromTiles[tile].dangerous_bottom;
+
+        return dangerous;
+    }
+
+    public int GetTileHurtVal(Vector2 worldPosition)
+    {
+        Vector3Int gridPosition = map.WorldToCell(worldPosition);
+
+        TileBase tile = map.GetTile(gridPosition);
+
+        if (tile == null)
+            return 0;
+
+        int hurt_val = dataFromTiles[tile].hurt_val;
+
+        return hurt_val;
+    }
+
+    public bool GetTileBounce(Vector2 worldPosition)
+    {
+        Vector3Int gridPosition = map.WorldToCell(worldPosition);
+
+        TileBase tile = map.GetTile(gridPosition);
+
+        if (tile == null)
+            return false;
+
+        bool bounce = dataFromTiles[tile].bounce;
+
+        return bounce;
     }
 }
