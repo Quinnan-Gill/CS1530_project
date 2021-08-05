@@ -1,9 +1,86 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Camera2DFollow : MonoBehaviour
 {
+    public class Box
+    {
+        public float Width;
+        public float Height;
+        public float X;
+        public float Y;
+
+        public float Right;
+        public float Left;
+        public float Top;
+        public float Bottom;
+
+        public Box()
+        {
+            Right  = float.MinValue;
+            Left   = float.MaxValue;
+            Top    = float.MinValue;
+            Bottom = float.MaxValue;
+        }
+
+        public Box(float b_x, float b_y, float b_width, float b_height)
+        {
+            X = b_x;
+            Y = b_y;
+            Width = b_width;
+            Height = b_height;
+
+            Right = X + Width/2;
+            Left = X - Width/2;
+            Top = Y + Height/2;
+            Bottom = Y - Height/2;
+        }
+
+        public bool InBox(Vector2 pos)
+        {
+            if (
+                pos.x >= Left  &&
+                pos.x <= Right &&
+                pos.y <= Top  &&
+                pos.y >= Bottom
+            )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void Maximize(Box other)
+        {
+            if (other.Right > Right)
+            {
+                Right = other.Right;
+            }
+            if (other.Left < Left)
+            {
+                Left = other.Left;
+            }
+            if (other.Top > Top)
+            {
+                Top = other.Top;
+            }
+            if (other.Bottom < Bottom)
+            {
+                Bottom = other.Bottom;
+            }
+        }
+
+        public string ToString()
+        {
+            return "Right: " + Right + " Left: " + Left + " Top: " + Top + " Bottom: " + Bottom;
+        }
+    }
+
     public Transform target;
+    public List<Transform> canvasList;
+    private Box[] canvas_sizes;
+
     public float damping = 1;
     public float lookAheadFactor = 3;
     public float lookAheadReturnSpeed = 0.5f;
@@ -18,8 +95,6 @@ public class Camera2DFollow : MonoBehaviour
     public Transform cameraCanvas;
     private float cam_height;
     private float cam_width;
-    private float canvas_height;
-    private float canvas_width;
 
     // Use this for initialization
     private void Start()
@@ -32,10 +107,23 @@ public class Camera2DFollow : MonoBehaviour
         cam_height = 2f * cam.orthographicSize;
         cam_width = cam_height * cam.aspect;
 
-        if (cameraCanvas != null)
+        // if (cameraCanvas != null)
+        // {
+        // }
+
+        canvas_sizes = new Box[canvasList.Count];
+        for(int i=0; i < canvasList.Count; i++)
         {
-            canvas_height = cameraCanvas.GetComponent<RectTransform>().rect.height;
-            canvas_width  = cameraCanvas.GetComponent<RectTransform>().rect.width;
+            float canvas_height = canvasList[i].GetComponent<RectTransform>().rect.height;
+            float canvas_width  = canvasList[i].GetComponent<RectTransform>().rect.width;
+            canvas_sizes[i] = new Box(
+                canvasList[i].position.x,
+                canvasList[i].position.y,
+                canvas_width,
+                canvas_height
+            );
+
+            Debug.Log(canvas_sizes[i].ToString());
         }
     }
 
@@ -66,28 +154,54 @@ public class Camera2DFollow : MonoBehaviour
         Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
         Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
 
-        if (cameraCanvas != null)
+        Box maxBox = new Box();
+        Vector2 newPosFlat = new Vector2(newPos.x, newPos.y);
+        bool inBox = false;
+        int count = 0;
+
+        for(int i=0; i < canvas_sizes.Length; i++)
+        {
+            if (canvas_sizes[i].InBox(newPosFlat))
+            {
+                inBox = true;
+                maxBox.Maximize(canvas_sizes[i]);
+            }
+        }
+        Debug.Log("Max " + maxBox.ToString());
+        Debug.Log("Pos " + newPosFlat);
+        Debug.Log("Low Lim " + (maxBox.Left + cam_height/2));
+        Debug.Log("High Lim " + (maxBox.Right - cam_height/2));
+        Debug.Log(
+            "Clamp " + 
+            Mathf.Clamp(
+                newPosFlat.x,
+                maxBox.Left + cam_width/2,
+                maxBox.Right - cam_width/2
+            )
+        );
+
+        if (inBox)
         {
             transform.position = new Vector3(
                 Mathf.Clamp(
                     newPos.x,
-                    cameraCanvas.position.x - canvas_width/2 + cam_width/2,
-                    cameraCanvas.position.x + canvas_width/2 - cam_width/2
+                    maxBox.Left  + cam_width/2,
+                    maxBox.Right - cam_width/2
                 ),
                 // newPos.x,
                 Mathf.Clamp(
                     newPos.y,
-                    cameraCanvas.position.y - canvas_height/2 + cam_height/2,
-                    cameraCanvas.position.y + canvas_height/2 - cam_height/2
+                    maxBox.Top    + cam_height/2,
+                    maxBox.Bottom - cam_height/2
                 ),
                 newPos.z
             );
         }
-        else
-        {
-            transform.position = newPos;
-        }
-
+        // else
+        // {
+        //     
+        // }
+        transform.position = newPos;
         m_LastTargetPosition = target.position;
     }
 
