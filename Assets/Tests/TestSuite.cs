@@ -24,4 +24,19 @@ public class TestSuite
         yield break;
     }
 
+    [UnityTest]
+    public IEnumerator TestCameraFollow() {
+        GameObject playerobj = GameObject.FindWithTag("Player");
+        Transform playertr = playerobj.transform;
+
+        GameObject camobj = GameObject.FindWithTag("MainCamera");
+        Transform camtr = camobj.transform;
+        float x = camtr.position.x;
+
+        // Move the player, wait a bit, then check that the camera moved.
+        playertr.position += Vector3.right * 0.5f;
+        yield return new WaitForSeconds(0.25f);
+        Assert.AreNotEqual(playertr.position.x, x);
+    }
+
 }
