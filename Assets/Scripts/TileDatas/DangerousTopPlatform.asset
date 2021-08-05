@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 359c794daeec7454e96788e6ccfaea19, type: 3}
+  m_Name: DangerousTopPlatform
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 11400000, guid: dfd515b8e65adfb4288f921a00722ae3, type: 2}
+  - {fileID: 11400000, guid: 4658c6e054953c04584ffe3b41638786, type: 2}
+  - {fileID: 11400000, guid: 1887ca7a326a560429d2edcdffaab3a0, type: 2}
+  dangerous_top: 1
+  dangerous_bottom: 0
+  hurt_val: 10
+  bounce: 0
+  no_rigid: 0
+  description: Dangerous Top Platform

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapManager : MonoBehaviour
+public class MapController : MonoBehaviour
 {
     [SerializeField]
     private Tilemap map;
@@ -21,6 +21,8 @@ public class MapManager : MonoBehaviour
         {
             foreach (var tile in tileData.tiles)
             {
+                if (tile == null)
+                    continue;
                 dataFromTiles.Add(tile, tileData);
             }
         }
@@ -56,7 +58,7 @@ public class MapManager : MonoBehaviour
         return desc;
     }
 
-    public bool GetTileDanger(Vector2 worldPosition)
+    public bool GetTileDangerTop(Vector2 worldPosition)
     {
         Vector3Int gridPosition = map.WorldToCell(worldPosition);
 
@@ -65,8 +67,50 @@ public class MapManager : MonoBehaviour
         if (tile == null)
             return false;
 
-        bool dangerous = dataFromTiles[tile].dangerous;
+        bool dangerous = dataFromTiles[tile].dangerous_top;
 
         return dangerous;
+    }
+
+    public bool GetTileDangerBottom(Vector2 worldPosition)
+    {
+        Vector3Int gridPosition = map.WorldToCell(worldPosition);
+
+        TileBase tile = map.GetTile(gridPosition);
+
+        if (tile == null)
+            return false;
+
+        bool dangerous = dataFromTiles[tile].dangerous_bottom;
+
+        return dangerous;
+    }
+
+    public int GetTileHurtVal(Vector2 worldPosition)
+    {
+        Vector3Int gridPosition = map.WorldToCell(worldPosition);
+
+        TileBase tile = map.GetTile(gridPosition);
+
+        if (tile == null)
+            return 0;
+
+        int hurt_val = dataFromTiles[tile].hurt_val;
+
+        return hurt_val;
+    }
+
+    public bool GetTileBounce(Vector2 worldPosition)
+    {
+        Vector3Int gridPosition = map.WorldToCell(worldPosition);
+
+        TileBase tile = map.GetTile(gridPosition);
+
+        if (tile == null)
+            return false;
+
+        bool bounce = dataFromTiles[tile].bounce;
+
+        return bounce;
     }
 }

@@ -13,6 +13,7 @@ public class Camera2DFollow : MonoBehaviour
     private Vector3 m_LastTargetPosition;
     private Vector3 m_CurrentVelocity;
     private Vector3 m_LookAheadPos;
+    private float nextTimeToSearch = 0;
 
     public Transform cameraCanvas;
     private float cam_height;
@@ -31,14 +32,23 @@ public class Camera2DFollow : MonoBehaviour
         cam_height = 2f * cam.orthographicSize;
         cam_width = cam_height * cam.aspect;
 
-        canvas_height = cameraCanvas.GetComponent<RectTransform>().rect.height;
-        canvas_width  = cameraCanvas.GetComponent<RectTransform>().rect.width;
+        if (cameraCanvas != null)
+        {
+            canvas_height = cameraCanvas.GetComponent<RectTransform>().rect.height;
+            canvas_width  = cameraCanvas.GetComponent<RectTransform>().rect.width;
+        }
     }
 
 
     // Update is called once per frame
     private void Update()
     {
+        if (target == null)
+        {
+            FindPlayer();
+            return;
+        }
+
         // only update lookahead pos if accelerating or changed direction
         float xMoveDelta = (target.position - m_LastTargetPosition).x;
 
@@ -79,5 +89,18 @@ public class Camera2DFollow : MonoBehaviour
         }
 
         m_LastTargetPosition = target.position;
+    }
+
+    void FindPlayer()
+    {
+        if (nextTimeToSearch <= Time.time)
+        {
+            GameObject searchResult = GameObject.FindGameObjectWithTag("Player");
+            if (searchResult != null)
+            {
+                target = searchResult.transform;
+            }
+            nextTimeToSearch = Time.time + 0.5f;
+        }
     }
 }
