@@ -37,4 +37,12 @@ public class GameController : MonoBehaviour
             gm.StartCoroutine(gm.RespawnPlayer());
         }
     }
+
+    public static void KillEnemy(Enemy enemy)
+    {
+        if (enemy != null)
+        {
+            Destroy(enemy.gameObject);
+        }
+    }
 }
