@@ -37,6 +37,22 @@ public class TestSuite
         playertr.position += Vector3.right * 0.5f;
         yield return new WaitForSeconds(0.25f);
         Assert.AreNotEqual(playertr.position.x, x);
+        yield break;
+    }
+
+    [UnityTest]
+    public IEnumerator TestKill() {
+        GameObject playerobj = GameObject.FindWithTag("Player");
+        Player player = playerobj.GetComponent<Player>();
+        // Kill the player, let update run, and check that the player is gone.
+        GameController.KillPlayer(player);
+        yield return null;
+        Assert.IsNull(GameObject.FindWithTag("Player"));
+        // Wait for the respawn delay plus some extra, and check that the
+        // player is back.
+        yield return new WaitForSeconds(GameController.gm.spawnDelay * 1.05f);
+        Assert.IsNotNull(GameObject.FindWithTag("Player"));
+        yield break;
     }
 
 }
