@@ -26,6 +26,15 @@ TextureImporter:
   - first:
       213: -7142825360250746677
     second: characters_tileset_7
+  - first:
+      213: 3957303305984053927
+    second: characters_tileset_8
+  - first:
+      213: -1411814499681519295
+    second: characters_tileset_9
+  - first:
+      213: -5614590260863620306
+    second: characters_tileset_10
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -130,10 +139,10 @@ TextureImporter:
       name: characters_tileset_0
       rect:
         serializedVersion: 2
-        x: 82
-        y: 306
-        width: 18
-        height: 7
+        x: 0
+        y: 869
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -151,10 +160,10 @@ TextureImporter:
       name: characters_tileset_1
       rect:
         serializedVersion: 2
-        x: 106
-        y: 261
-        width: 85
-        height: 96
+        x: 256
+        y: 869
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,10 +181,10 @@ TextureImporter:
       name: characters_tileset_2
       rect:
         serializedVersion: 2
-        x: 342
-        y: 255
-        width: 96
-        height: 89
+        x: 512
+        y: 869
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,10 +202,10 @@ TextureImporter:
       name: characters_tileset_3
       rect:
         serializedVersion: 2
-        x: 565
-        y: 261
-        width: 97
-        height: 67
+        x: 0
+        y: 613
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -214,10 +223,10 @@ TextureImporter:
       name: characters_tileset_4
       rect:
         serializedVersion: 2
-        x: 73
-        y: 0
-        width: 107
-        height: 122
+        x: 256
+        y: 613
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -235,10 +244,10 @@ TextureImporter:
       name: characters_tileset_5
       rect:
         serializedVersion: 2
-        x: 311
-        y: 10
-        width: 128
-        height: 171
+        x: 768
+        y: 613
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -256,10 +265,10 @@ TextureImporter:
       name: characters_tileset_6
       rect:
         serializedVersion: 2
-        x: 645
-        y: 5
-        width: 117
-        height: 170
+        x: 0
+        y: 357
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -277,10 +286,10 @@ TextureImporter:
       name: characters_tileset_7
       rect:
         serializedVersion: 2
-        x: 821
-        y: 4
-        width: 140
-        height: 252
+        x: 256
+        y: 357
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -290,6 +299,69 @@ TextureImporter:
       bones: []
       spriteID: bc84a9ddd269fdc90800000000000000
       internalID: -7142825360250746677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: characters_tileset_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 357
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a298add36a2be630800000000000000
+      internalID: 3957303305984053927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: characters_tileset_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 101
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 149bcb1513a386ce0800000000000000
+      internalID: -1411814499681519295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: characters_tileset_10
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 101
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2b2bd5b7e7f412b0800000000000000
+      internalID: -5614590260863620306
       vertices: []
       indices: 
       edges: []

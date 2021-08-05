@@ -190,14 +190,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b00daba59fc466295bdd8de7d08e39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MaxSpeed: 10
-  m_JumpForce: 800
+  m_MaxSpeed: 7
+  m_JumpForce: 600
+  m_CouchJumpForce: 200
   m_CrouchSpeed: 0.25
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
     m_Bits: 55
-  wallSlidingSpeed: 0.5
+  wallSlidingSpeed: 0.2
   wallJumpX: 10
   wallJumpY: 10
   groundMask:
@@ -253,6 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2deae1ff33ae3494ba00eb873b3011fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 100
   disableHurtTime: 1
   hurtJumpHeight: 400
   blinkSpeed: 0.1
@@ -357,7 +359,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7142825360250746677, guid: b7f0dcadf454f664180ab339107769c7, type: 3}
+  m_Sprite: {fileID: 441835322507665678, guid: b7f0dcadf454f664180ab339107769c7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
