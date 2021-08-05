@@ -67,13 +67,7 @@ public class PlatformerCharacter2D : MonoBehaviour
         // Set the vertical animation
         m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
 
-        m_Left = Physics2D.OverlapBox(
-            new Vector2(
-                gameObject.transform.position.x - 0.25f,
-                gameObject.transform.position.y
-            ),
-            new Vector2(0.25f, 0.2f), 0f, m_WhatIsGround
-        );
+        
 
         m_Right = Physics2D.OverlapBox(
             new Vector2(
