@@ -6,6 +6,7 @@ public class PlatformerCharacter2D : MonoBehaviour
 {
     [SerializeField] private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
     [SerializeField] private float m_JumpForce = 400f;                  // Amount of force added when the player jumps.
+    [SerializeField] private float m_CouchJumpForce = 200f;
     [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
     [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
     [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
@@ -95,48 +96,36 @@ public class PlatformerCharacter2D : MonoBehaviour
 
     private void CheckTileDanger()
     {
-        // Debug.Log(mapManager.GetTileDescription(
-        //     new Vector2(
-        //         transform.position.x,
-        //         transform.position.y + 0.60f
-        //     )
-        // ));
-
         // Bottom
-        bool g_danger = mapController.GetTileDanger(
-            new Vector2(
-                m_GroundCheck.position.x,
-                m_GroundCheck.position.y - k_GroundedRadius
-            )
+        Vector2 bottomVec = new Vector2(
+            m_GroundCheck.position.x,
+            m_GroundCheck.position.y - k_GroundedRadius
         );
+        bool g_danger = mapController.GetTileDangerBottom(
+            bottomVec
+        );
+        if (g_danger)
+        {
+            player.DamagePlayer(
+                mapController.GetTileHurtVal(bottomVec),
+                true
+            );
+        }
 
         // Top
-        bool t_danger = mapController.GetTileDanger(
-            new Vector2(
-                transform.position.x,
-                transform.position.y + 0.60f
-            )
+        Vector2 topVec = new Vector2(
+            transform.position.x,
+            transform.position.y + 0.60f
         );
-        
-        // // Right
-        // bool r_result = mapManager.GetTileDanger(
-        //     new Vector2(
-        //         transform.position.x + 1f,
-        //         transform.position.y
-        //     )
-        // );
-
-        // // Left
-        // bool l_result = mapManager.GetTileDanger(
-        //     new Vector2(
-        //         transform.position.x - 1f,
-        //         transform.position.y
-        //     )
-        // );
-
-        if (g_danger || t_danger)
+        bool t_danger = mapController.GetTileDangerTop(
+            topVec
+        );
+        if (t_danger)
         {
-            player.DamagePlayer(50, true);
+            player.DamagePlayer(
+                mapController.GetTileHurtVal(topVec),
+                true
+            );
         }
     }
 
@@ -201,6 +190,13 @@ public class PlatformerCharacter2D : MonoBehaviour
 
 
         // If the player should jump...
+        if (IsBouncing())
+        {
+            // Add a vertical force to the player.
+            m_Grounded = false;
+            m_Anim.SetBool("Ground", false);
+            m_Rigidbody2D.AddForce(new Vector2(0f, m_CouchJumpForce));
+        }
         if (m_Grounded && jump)
         {
             // Add a vertical force to the player.
@@ -208,6 +204,15 @@ public class PlatformerCharacter2D : MonoBehaviour
             m_Anim.SetBool("Ground", false);
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
+    }
+
+    private bool IsBouncing()
+    {
+        Vector2 bottomVec = new Vector2(
+            m_GroundCheck.position.x,
+            m_GroundCheck.position.y - k_GroundedRadius
+        );
+        return mapController.GetTileBounce(bottomVec);
     }
 
 
