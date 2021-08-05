@@ -12,6 +12,5 @@ public class TileData : ScriptableObject
     public bool dangerous_bottom;
     public int hurt_val;
     public bool bounce;
-    public bool no_rigid;
     public string description;
 }
