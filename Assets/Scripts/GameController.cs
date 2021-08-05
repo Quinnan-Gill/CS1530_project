@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameController : MonoBehaviour
 {
-    public static GameManager gm;
+    public static GameController gm;
 
     void Start()
     {
         if (gm == null)
         {
-            gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
+            gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameController>();
         }
     }
 

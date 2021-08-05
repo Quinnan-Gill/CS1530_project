@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapManager : MonoBehaviour
+public class MapController : MonoBehaviour
 {
     [SerializeField]
     private Tilemap map;
@@ -62,15 +62,16 @@ public class MapManager : MonoBehaviour
 
     public bool GetTileDanger(Vector2 worldPosition)
     {
-        Vector3Int gridPosition = map.WorldToCell(worldPosition);
+        // Vector3Int gridPosition = map.WorldToCell(worldPosition);
 
-        TileBase tile = map.GetTile(gridPosition);
+        // TileBase tile = map.GetTile(gridPosition);
 
-        if (tile == null)
-            return false;
+        // if (tile == null)
+        //     return false;
 
-        bool dangerous = dataFromTiles[tile].dangerous;
+        // bool dangerous = dataFromTiles[tile].dangerous;
 
-        return dangerous;
+        // return dangerous;
+        return false;
     }
 }
