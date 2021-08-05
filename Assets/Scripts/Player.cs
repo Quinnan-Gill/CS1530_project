@@ -71,4 +71,9 @@ public class Player : MonoBehaviour
             GameController.KillPlayer(this);
         }
     }
+
+    // for testing
+    public bool GetDisableHurt() {
+        return disableHurt;
+    }
 }
